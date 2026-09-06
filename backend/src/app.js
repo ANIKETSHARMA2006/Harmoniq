@@ -1,5 +1,8 @@
-import express from "express"
+import express, { urlencoded } from "express"
+import {clerkMiddleware} from "@clerk/express"
+import fileUpload from "express-fileupload"
 import dotenv from "dotenv"
+import path from "node:path"
 import { connectDB } from "./db/db.js"
 import userRouter from "./routes/user.routes.js"
 import authRouter from "./routes/auth.routes.js"
@@ -12,8 +15,19 @@ dotenv.config({
     path: "./.env"
 })
 const PORT = process.env.PORT || 5000
+const __dirname = path.resolve();
+app.use(express.json());
+app.use(urlencoded({extended: true}));
 
-    
+app.use(clerkMiddleware());
+app.use(fileUpload({
+    useTempFiles: true,
+    tempFileDir: path.join(__dirname,"temp"),
+    createParentPath: true,
+    limits:{
+        fileSize: 10*1024*1024
+    },
+}))
 
 app.use("/api/users",userRouter)
 app.use("/api/auth",authRouter)
