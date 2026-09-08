@@ -10,10 +10,15 @@ import adminRouter from "./routes/admin.routes.js"
 import songRouter from "./routes/song.routes.js"
 import albumRouter from "./routes/album.routes.js"
 import statsRouter from "./routes/stats.routes.js"
+import cors from "cors"
 const app = express()
 dotenv.config({
     path: "./.env"
 })
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}))
 const PORT = process.env.PORT || 5000
 const __dirname = path.resolve();
 app.use(express.json());
@@ -36,7 +41,11 @@ app.use("/api/song",songRouter)
 app.use("/api/albums",albumRouter)
 app.use("/api/stats",statsRouter)
 
-app.listen(PORT,async()=>{
-    await connectDB()
-    console.log("The server is up and running on PORT: ", PORT);
-})
+const startServer = async () => {
+    await connectDB();
+    app.listen(PORT, () => {
+        console.log("The server is up and running on PORT: ", PORT);
+    });
+};
+
+startServer();

@@ -13,7 +13,7 @@ const userSchema = new Schema(
     clerkId: {
       type: String,
       required: true,
-      uniqe: true,
+      unique: true,
     },
   },
   { timestamps: true },
