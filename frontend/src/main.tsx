@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import HomePage from './pages/Home/HomePage.tsx'
 import AuthCallbackPage from './pages/Auth-callback/AuthCallbackPage.tsx'
 import './index.css'
-import { ClerkProvider } from '@clerk/react'
+import { AuthenticateWithRedirectCallback, ClerkProvider } from '@clerk/react'
 import { createBrowserRouter, RouterProvider, } from "react-router-dom";
 import AuthProvider from './providers/AuthProvider.tsx'
 
@@ -22,6 +22,10 @@ const router = createBrowserRouter([
     path: "/auth-callback",
     element: <AuthCallbackPage />,
   },
+  {
+    path: "/sso-callback",
+    element: < AuthenticateWithRedirectCallback signUpForceRedirectUrl={"/auth-callback"}/>,
+  }
 ]);
 
 createRoot(document.getElementById('root')!).render(
