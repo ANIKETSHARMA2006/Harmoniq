@@ -1,13 +1,21 @@
 
+import { getAuth } from "@clerk/express";
 import { User } from "../models/user.model.js";
 
 const authCallback = async (req, res) => {
     try {
         console.log("REQ BODY:", req.body);
 
-        const { id, firstName, lastName, imageUrl } = req.body;
+        const { id, firstName, lastName = "", imageUrl } = req.body;
+        const { userId } = getAuth(req);
 
-        if (!id || !firstName || !lastName || !imageUrl) {
+        if (!id || id !== userId || !firstName || !imageUrl) {
+            console.error("Auth callback validation failed", {
+                hasId: Boolean(id),
+                matchesSession: id === userId,
+                hasFirstName: Boolean(firstName),
+                hasImageUrl: Boolean(imageUrl),
+            });
             return res.status(400).json({
                 success: false,
                 message: "Missing required user fields",
@@ -50,4 +58,3 @@ const authCallback = async (req, res) => {
 };
 
 export { authCallback };
-

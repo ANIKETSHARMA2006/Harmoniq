@@ -1,6 +1,9 @@
+import { getAuth } from "@clerk/express";
+import { User } from "../models/user.model.js";
+
 const getAllUsers = async (req, res) => {
     try {
-        const currentUserId = req.auth.userId;
+        const { userId: currentUserId } = getAuth(req);
         const users = await User.find({ clerkId: { $ne: currentUserId } });
         res.status(200).json(users);
     } catch (error) {

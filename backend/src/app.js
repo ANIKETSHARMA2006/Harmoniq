@@ -1,7 +1,7 @@
+import "dotenv/config"
 import express, { urlencoded } from "express"
 import {clerkMiddleware} from "@clerk/express"
 import fileUpload from "express-fileupload"
-import dotenv from "dotenv"
 import path from "node:path"
 import { connectDB } from "./db/db.js"
 import userRouter from "./routes/user.routes.js"
@@ -12,9 +12,8 @@ import albumRouter from "./routes/album.routes.js"
 import statsRouter from "./routes/stats.routes.js"
 import cors from "cors"
 const app = express()
-dotenv.config({
-    path: "./.env"
-})
+// Old code called dotenv.config() here, after imported modules had already loaded.
+app.use(clerkMiddleware());
 app.use(cors({
     origin: "http://localhost:3000",
     credentials: true
@@ -24,7 +23,6 @@ const __dirname = path.resolve();
 app.use(express.json());
 app.use(urlencoded({extended: true}));
 
-app.use(clerkMiddleware());
 app.use(fileUpload({
     useTempFiles: true,
     tempFileDir: path.join(__dirname,"temp"),
