@@ -22,6 +22,10 @@ const createSong =async(req,res,next)=>{
             return res.status(400).json({ message: "Please upload all files"});
         }
         const {title, artist,albumId,duration}= req.body
+        const parsedDuration = Number(duration);
+        if (!title || !artist || !Number.isFinite(parsedDuration) || parsedDuration <= 0) {
+            return res.status(400).json({ message: "Title, artist, and a valid duration are required" });
+        }
         const audioFile=req.files.audioFile
         const imageFile=req.files.imageFile
 
@@ -33,6 +37,7 @@ const createSong =async(req,res,next)=>{
             artist,
             audioUrl,
             imageUrl,
+            duration: parsedDuration,
             albumId: albumId || null,
         })
         await song.save()
@@ -53,6 +58,9 @@ const deleteSong = async(req,res,next)=>{
     const {id} = req.params
 
     const song = await Song.findById(id)
+    if (!song) {
+        return res.status(404).json({ message: "Song not found" });
+    }
 
     if(song.albumId){
         await Album.findByIdAndUpdate(song.albumId,{
@@ -60,7 +68,7 @@ const deleteSong = async(req,res,next)=>{
         })
     }
 
-    await song.findByIdAndDelete(id);
+    await Song.findByIdAndDelete(id);
 
     res.status(200).json({message:"Song deleted successfully"});
 
@@ -73,17 +81,21 @@ const deleteSong = async(req,res,next)=>{
 const createAlbum = async(req,res,next)=>{
 try {
     const {title,artist,releaseYear} = req.body
-    const {imageFile}= req.files
+    const imageFile = req.files?.imageFile
+    const parsedReleaseYear = Number(releaseYear)
+    if (!imageFile || !title || !artist || !Number.isInteger(parsedReleaseYear)) {
+        return res.status(400).json({ message: "Title, artist, release year, and an image are required" });
+    }
     const imageUrl= await uploadToCloudinary(imageFile)
 
     const album = new Album({
         title,
         artist,
         imageUrl,
-        releaseYear
+        releaseYear: parsedReleaseYear
     })
     await album.save()
-    
+    res.status(201).json(album)
 } catch (error) {
     console.log("error in the createAlnum", error);
     res.status(500).send("internal server error");

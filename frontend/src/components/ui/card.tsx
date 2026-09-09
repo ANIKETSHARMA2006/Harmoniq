@@ -1,5 +1,7 @@
 import * as React from "react"
-import { cn } from "cn"
+// Old import used the standalone "cn" package instead of the app utility.
+import { cn } from "@/lib/utils"
+// Old code: import { cn } from "cn"
 
 function Card({
   className,
