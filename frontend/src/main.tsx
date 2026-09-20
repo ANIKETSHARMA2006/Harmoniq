@@ -1,10 +1,7 @@
-/* This is the application entrypoint, not a Fast Refresh component module. */
-/* eslint-disable react-refresh/only-export-components */
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import HomePage from './pages/Home/HomePage.tsx'
 import AuthCallbackPage from './pages/Auth-callback/AuthCallbackPage.tsx'
-import AdminPage from './pages/Admin/AdminPage.tsx'
 import './index.css'
 import { AuthenticateWithRedirectCallback, ClerkProvider } from '@clerk/react'
 import { createBrowserRouter, RouterProvider, } from "react-router-dom";
@@ -28,11 +25,6 @@ const router = createBrowserRouter([
   {
     path: "/sso-callback",
     element: < AuthenticateWithRedirectCallback signUpForceRedirectUrl={"/auth-callback"}/>,
-  },
-  {
-    // Old code had an admin link without a matching route.
-    path: "/admin",
-    element: <AdminPage />,
   }
 ]);
 
@@ -45,5 +37,3 @@ createRoot(document.getElementById('root')!).render(
       </ClerkProvider>
   </StrictMode>,
 )
-
-// Old code had no /admin route in the router configuration.

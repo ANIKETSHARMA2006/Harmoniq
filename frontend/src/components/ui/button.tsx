@@ -55,5 +55,4 @@ function Button({
   )
 }
 
-// Old code exported buttonVariants from this component file, which breaks Fast Refresh.
-export { Button }
+export { Button, buttonVariants }

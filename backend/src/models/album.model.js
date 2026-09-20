@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const albumSchema = new Schema(
   {
-    title: {
+    tital: {
       type: String,
       required: true,
     },

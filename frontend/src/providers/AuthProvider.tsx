@@ -1,8 +1,7 @@
-import { useAuth } from "@clerk/react";
+import { useAuth, useUser } from "@clerk/react";
 import axiosInstance from "../lib/axios";
 import { Loader } from "lucide-react";
 import  { useState, useEffect } from 'react'
-// Old import also included useUser, but the value was never used.
 
 const updateApiToken = (token: string| null) =>  {
   if (token) {
@@ -14,12 +13,11 @@ const updateApiToken = (token: string| null) =>  {
 }
 
 const AuthProvider = ({children}:{children: React.ReactNode}) => {
-    const {getToken, isLoaded} = useAuth();
+    const {getToken} = useAuth();
+    const {user} = useUser();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-      if (!isLoaded) return;
-
       const initAuth = async () => {
         try {
           const token = await getToken();
@@ -32,7 +30,7 @@ const AuthProvider = ({children}:{children: React.ReactNode}) => {
         }
       };
       initAuth();
-    },[getToken, isLoaded]);
+    },[getToken]);
  if(loading) return (<div className="h-screen w-full flex items-center justify-center"><Loader className="size-8 text-white animate-spin" /></div>);
  return (
     <div>
