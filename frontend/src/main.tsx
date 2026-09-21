@@ -6,6 +6,8 @@ import './index.css'
 import { AuthenticateWithRedirectCallback, ClerkProvider } from '@clerk/react'
 import { createBrowserRouter, RouterProvider, } from "react-router-dom";
 import AuthProvider from './providers/AuthProvider.tsx'
+import MainLayout from './layout/MainLayout.tsx'
+import ChatPage from './pages/chat/ChatPage.tsx'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -15,17 +17,26 @@ if (!PUBLISHABLE_KEY) {
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <HomePage />,
-  },
-  {
     path: "/auth-callback",
     element: <AuthCallbackPage />,
   },
   {
     path: "/sso-callback",
     element: < AuthenticateWithRedirectCallback signUpForceRedirectUrl={"/auth-callback"}/>,
-  }
+  },
+  {
+    element: <MainLayout/>,
+    children: [
+      {
+        path: "/",
+        element: <HomePage/>
+      },
+      {
+        path: "/chat",
+        element: <ChatPage/>
+      }
+    ],
+  },
 ]);
 
 createRoot(document.getElementById('root')!).render(

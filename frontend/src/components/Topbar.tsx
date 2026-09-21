@@ -1,5 +1,4 @@
 import { LayoutDashboardIcon } from 'lucide-react';
-import React from 'react'
 import { SignOutButton, useAuth } from '@clerk/react';
 import { Link } from 'react-router-dom'
 import SignInOAuthButtons from './SignInOAuthButtons';
