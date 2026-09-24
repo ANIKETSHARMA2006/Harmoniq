@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/app.js",
+    "seed:songs":"node src/seeds/songs.js",
+    "seed:albums":"node src/seeds/albums.js"
   },
   "keywords": [],
   "author": "",
