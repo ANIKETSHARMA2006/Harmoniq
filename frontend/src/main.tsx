@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider, } from "react-router-dom";
 import AuthProvider from './providers/AuthProvider.tsx'
 import MainLayout from './layout/MainLayout.tsx'
 import ChatPage from './pages/chat/ChatPage.tsx'
+import AlbumPage from './pages/Album/AlbumPage.tsx'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "/chat",
         element: <ChatPage/>
+      },
+      {
+        path: "/albums/:albumId",
+        element: <AlbumPage/>
       }
     ],
   },

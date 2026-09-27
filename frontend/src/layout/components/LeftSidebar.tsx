@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from "@clerk/react";
-import { HomeIcon, Library, Loader, MessageCircle } from 'lucide-react'
+import { HomeIcon, Library, MessageCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/Button'
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import PlaylistSkeleton from '@/components/skeletons/PlaylistSkeleton';
 import { useMusicStore } from '@/store/useMusicStore';
 import { useEffect } from 'react';
@@ -21,7 +21,7 @@ const LeftSidebar = () => {
     
 
   return (
-    <div className='h-full flex flex-col gap-2'>
+    <div className='h-[99.5%] flex flex-col gap-2'>
     {/* navigation menu */}
 
         <div className='rounded-lg bg-zinc-900 p-4'>
@@ -76,7 +76,7 @@ const LeftSidebar = () => {
                                     {album.title}
                                 </p>
                                 <p className='text-sm text-zinc-400 truncate'>
-                                    Album . {album.artist}
+                                    Album • {album.artist}
                                 </p>
                             </div>
                         </Link>
