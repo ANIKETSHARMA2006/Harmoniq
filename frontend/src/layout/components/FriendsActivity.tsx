@@ -15,7 +15,7 @@ const FriendsActivity = () => {
     const isPlaying = true;
 
     const LoginPrompt = () => (
-	<div className='h-full flex flex-col items-center justify-center p-6 text-center space-y-4'>
+	<div className='h-full w-full flex flex-col items-center justify-center p-6 text-center space-y-4'>
 		<div className='relative'>
 			<div
 				className='absolute -inset-1 bg-linear-to-r from-emerald-500 to-sky-500 rounded-full blur-lg

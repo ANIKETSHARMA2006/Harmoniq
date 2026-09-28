@@ -17,15 +17,15 @@ const MainLayout = () => {
       <ResizablePanel defaultSize="15%" minSize={isMobile? "0%" : "15%"} maxSize="25%">
         <LeftSidebar/>
       </ResizablePanel>
-     
+     <ResizableHandle className="hover:bg-gray-400 transition duration-0" withHandle={true}></ResizableHandle>
       <ResizablePanel defaultSize={isMobile? 80 : 70}>
-        <div className="h-[90vh] p-1 w-full rounded-lg gap-x-1">
+        <div className="h-[90vh] w-full rounded-md gap-x-1">
           <Outlet/>
         </div>
       </ResizablePanel>
-      
+      <ResizableHandle className="hover:bg-gray-400 transition duration-0" withHandle={true}></ResizableHandle>
       <ResizablePanel defaultSize="15%" minSize="0%" maxSize="25%" collapsedSize="0%">
-        <div className="flex h-full items-center justify-center p-6">
+        <div className=" h-full overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden">
           <span className="font-semibold"><FriendsActivity/></span>
         </div>
       </ResizablePanel>

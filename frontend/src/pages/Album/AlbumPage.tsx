@@ -88,7 +88,7 @@ const AlbumPage = () => {
 											<div
 												key={song._id}
 												className={`grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-4 py-2 text-sm 
-                      text-zinc-400 hover:bg-white/5 rounded-md group cursor-pointer
+                      text-zinc-400 transition duration-150 hover:bg-white/5 rounded-md group cursor-pointer
                       `}
 											>
 												<div className='flex items-center justify-center'>
