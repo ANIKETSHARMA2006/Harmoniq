@@ -2,12 +2,10 @@ import { LayoutDashboardIcon } from "lucide-react";
 import { useAuth, UserButton } from "@clerk/react";
 import { Link } from "react-router-dom";
 import SignInOAuthButtons from "./SignInOAuthButtons";
-import { useAuthStore } from "@/store/useAuthStore";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "./ui/button";
+
 
 const Topbar = () => {
-  const { isAdmin } = useAuthStore();
   const { isSignedIn } = useAuth();
   return (
     <div className="flex items-center justify-between p-4 sticky top-0 bg-zinc-900/75 text-white backdrop-blur-md z-10">
@@ -40,7 +38,7 @@ const Topbar = () => {
   <span
     className="
       absolute inset-0 -translate-x-full
-      bg-gradient-to-r from-transparent via-emerald-400/10 to-transparent
+      bg-linear-to-r from-transparent via-emerald-400/10 to-transparent
       transition-transform duration-700
       group-hover:translate-x-full
     "
