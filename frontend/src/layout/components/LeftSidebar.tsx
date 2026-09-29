@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useAuth } from "@clerk/react";
 import { HomeIcon, Library, MessageCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { buttonVariants } from '@/components/ui/Button'
+import { buttonVariants } from '@/components/ui/button'
 import { ScrollArea } from "@/components/ui/scroll-area"
 import PlaylistSkeleton from '@/components/skeletons/PlaylistSkeleton';
 import { useMusicStore } from '@/store/useMusicStore';

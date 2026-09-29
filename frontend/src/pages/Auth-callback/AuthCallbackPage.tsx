@@ -2,7 +2,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import axiosInstance from '@/lib/axios'
 import { useUser } from '@clerk/react'
 import { Loader } from 'lucide-react'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const AuthCallbackPage = () => {
