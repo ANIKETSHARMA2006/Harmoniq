@@ -1,3 +1,5 @@
+import { User } from "../models/user.model.js"
+
 const getAllUsers = async (req, res) => {
     try {
         const currentUserId = req.auth.userId;

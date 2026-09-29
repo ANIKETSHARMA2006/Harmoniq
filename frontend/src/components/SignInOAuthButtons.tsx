@@ -1,5 +1,5 @@
 import { useSignIn } from '@clerk/react/legacy';
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 
 const SignInOAuthButtons = () => {
     const { signIn, isLoaded } = useSignIn();
