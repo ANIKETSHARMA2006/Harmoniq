@@ -8,9 +8,15 @@ interface MusicStore {
     isLoading: boolean;
     error: string | null;
     currentAlbum: Album | null;
+    featuredSomgs: Song[];
+    madeForYouSongs: Song[];
+    trendingSongs: Song[];
 
     fetchAlbums: ()=> Promise<void>;
     fetchAlbumById: (id: string)=> Promise<void>;
+    fetchFeaturedSomgs: () => Promise<void>;
+    fetchMadeForYouSongs: () => Promise<void>;
+    fetchTrendingSongs: () => Promise<void>;
 }
 
 const useMusicStore = create<MusicStore>((set)=>({
@@ -19,6 +25,9 @@ const useMusicStore = create<MusicStore>((set)=>({
     isLoading: false,
     error: null,
     currentAlbum: null,
+    featuredSomgs: [],
+    madeForYouSongs: [],
+    trendingSongs: [],
 
         fetchAlbums: async () =>{
         set({
@@ -45,6 +54,15 @@ const useMusicStore = create<MusicStore>((set)=>({
             } finally{
                 set({isLoading: false});
             }
+        },
+         fetchFeaturedSomgs: async () =>{
+
+        },
+        fetchMadeForYouSongs: async () =>{
+
+        },
+        fetchTrendingSongs: async () =>{
+
         },
 }))
 
