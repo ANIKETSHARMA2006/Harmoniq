@@ -1,16 +1,29 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useChatStore } from '@/store/useChatStore'
-import { useUser } from '@clerk/react';
+import { useAuth, useUser } from '@clerk/react';
 import { HeadphonesIcon, Music, User } from 'lucide-react';
 import { useEffect } from 'react'
 
 const FriendsActivity = () => {
-    const { users,fetchUsers} = useChatStore()
-    const {user} = useUser();
+    const { users, fetchUsers, error } = useChatStore()
+    const { user } = useUser();
+    const { getToken, isLoaded, isSignedIn } = useAuth();
     useEffect(()=>{
-        if(user) fetchUsers();
-    },[fetchUsers,user])
+        let cancelled = false;
+
+        const loadUsers = async () => {
+            if (!isLoaded || !isSignedIn) return;
+
+            const token = await getToken();
+            if (!cancelled && token) await fetchUsers(token);
+        };
+
+        loadUsers();
+        return () => {
+            cancelled = true;
+        };
+    }, [fetchUsers, getToken, isLoaded, isSignedIn])
 
     const isPlaying = true;
 
@@ -46,6 +59,7 @@ const FriendsActivity = () => {
 
       <ScrollArea className="flex-1">
         <div className='p-4 space-y-4'>
+            {error && <p className='text-sm text-red-400'>{error}</p>}
             {users.map((user)=>(
                 <div key={user._id} 
                 className='cursor-pointer hover:bg-zinc-800/50 p-3 rounded-md transition-color group '>

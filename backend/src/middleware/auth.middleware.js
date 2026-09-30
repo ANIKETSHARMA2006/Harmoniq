@@ -1,8 +1,8 @@
 import { clerkClient, getAuth } from "@clerk/express";
 
 const protectRoute = async (req, res, next) => {
-  const { userId } = getAuth(req);
-  if (!userId) {
+  const { isAuthenticated, userId } = getAuth(req);
+  if (!isAuthenticated || !userId) {
     return res
       .status(401)
       .json({ message: "Unauthorized - User must be logged in" });
