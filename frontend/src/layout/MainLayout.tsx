@@ -6,20 +6,24 @@ import {
 import { Outlet } from "react-router-dom"
 import LeftSidebar from "./components/LeftSidebar";
 import FriendsActivity from "./components/FriendsActivity";
+import AudioPlayer from "./components/AudioPlayer";
+import PlayBackControls from "./components/PlayBackControls";
 
 const MainLayout = () => {
     const isMobile = false;
   return (
+    <div className="h-screen bg-black text-white flex flex-col">
     <ResizablePanelGroup
       orientation="horizontal"
-      className="h-[99vh] p-1 w-full rounded-lg gap-x-1"
+      className="h-screen p-1 w-full rounded-lg gap-x-1"
     >
+      <AudioPlayer />
       <ResizablePanel defaultSize="15%" minSize={isMobile? "0%" : "15%"} maxSize="25%">
         <LeftSidebar/>
       </ResizablePanel>
      <ResizableHandle className="hover:bg-gray-400 transition duration-0" withHandle={true}></ResizableHandle>
       <ResizablePanel defaultSize={isMobile? 80 : 70}>
-        <div className="h-[90vh] w-full rounded-md gap-x-1">
+        <div className="h-full w-full rounded-md gap-x-1">
           <Outlet/>
         </div>
       </ResizablePanel>
@@ -30,6 +34,8 @@ const MainLayout = () => {
         </div>
       </ResizablePanel>
     </ResizablePanelGroup>
+    <PlayBackControls />
+    </div>
   )
 }
 

@@ -21,7 +21,7 @@ const LeftSidebar = () => {
     
 
   return (
-    <div className='h-[99.5%] flex flex-col gap-2'>
+    <div className=' h-full flex flex-col gap-2'>
     {/* navigation menu */}
 
         <div className='rounded-lg bg-zinc-900 p-4'>

@@ -9,8 +9,8 @@ This repository is set up as two services:
 
 1. Push the repository to GitHub and create a Render Blueprint from the repository. Render will use the root `render.yaml` file.
 2. Add the values from `backend/.env.example` as Render environment variables. Render supplies `PORT` automatically; do not hard-code it in the dashboard.
-3. Set `CORS_ORIGINS` to the Vercel production URL, for example `https://your-frontend.vercel.app`, and include `http://localhost:3000` if local development is still needed.
-4. Confirm `https://your-backend.onrender.com/health` returns `{ "status": "ok" }`.
+3. Set `CORS_ORIGINS` to `https://harmoniq-fawn.vercel.app,http://localhost:3000` and redeploy the backend.
+4. Confirm `https://harmoniq-sl5f.onrender.com/health` returns `{ "status": "ok" }`.
 
 The backend's production command is `npm start`, and its health-check path is `/health`.
 
@@ -20,11 +20,11 @@ The backend's production command is `npm start`, and its health-check path is `/
 2. Set the project root directory to `frontend`.
 3. Add these environment variables:
 
-   - `VITE_API_BASE_URL=https://your-backend.onrender.com/api`
+   - `VITE_API_BASE_URL=https://harmoniq-sl5f.onrender.com/api`
    - `VITE_CLERK_PUBLISHABLE_KEY=...`
 
 4. Deploy with the default Vite settings (`npm run build`, output directory `dist`).
-5. Add the final Vercel URL to the backend's `CORS_ORIGINS` value and redeploy the backend.
+5. The backend CORS configuration already includes `https://harmoniq-fawn.vercel.app`; keep this value updated if your Vercel domain changes.
 
 The `frontend/vercel.json` rewrite keeps React Router routes working when a user refreshes a deep link.
 
