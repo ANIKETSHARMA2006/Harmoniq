@@ -9,6 +9,7 @@ import AuthProvider from './providers/AuthProvider.tsx'
 import MainLayout from './layout/MainLayout.tsx'
 import ChatPage from './pages/chat/ChatPage.tsx'
 import AlbumPage from './pages/Album/AlbumPage.tsx'
+import AdminPage from './pages/Admin/AdminPage.tsx'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: "/sso-callback",
     element: < AuthenticateWithRedirectCallback signUpForceRedirectUrl={"/auth-callback"}/>,
+  },
+  {
+    path: "/admin",
+    element: <AdminPage/>
   },
   {
     element: <MainLayout/>,

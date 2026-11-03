@@ -28,7 +28,6 @@ const Topbar = () => {
     "text-xs font-semibold text-zinc-200",
     "shadow-[0_3px_16px_rgba(0,0,0,0.3)]",
     "transition-all duration-300",
-    "hover:-translate-y-0.5",
     "hover:border-emerald-400/60",
     "hover:bg-emerald-500/10",
     "hover:text-white",
