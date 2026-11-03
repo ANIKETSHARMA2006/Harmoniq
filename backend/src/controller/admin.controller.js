@@ -1,6 +1,7 @@
 import {Song} from "../models/song.model.js"
 import {Album} from "../models/album.model.js"
 import cloudinary from "../config/cloudinary.js"
+import mongoose from "mongoose"
 
 // healper function for cloudinary uploads
 const uploadToCloudinary = async(file)=>{
@@ -52,7 +53,15 @@ const deleteSong = async(req,res,next)=>{
  try {
     const {id} = req.params
 
+    if (!mongoose.isValidObjectId(id)) {
+        return res.status(400).json({ message: "Invalid song ID" });
+    }
+
     const song = await Song.findById(id)
+
+    if (!song) {
+        return res.status(404).json({ message: "Song not found" });
+    }
 
     if(song.albumId){
         await Album.findByIdAndUpdate(song.albumId,{
@@ -60,13 +69,15 @@ const deleteSong = async(req,res,next)=>{
         })
     }
 
-    await song.findByIdAndDelete(id);
+    await Song.findByIdAndDelete(id);
 
     res.status(200).json({message:"Song deleted successfully"});
 
  } catch (error) {
-    console.log("error in deleteSong",error);
-    res.status(500).send("Internal server error");
+    console.error("Error in deleteSong", error);
+    res.status(500).json({
+        message: error instanceof Error ? error.message : "Internal server error",
+    });
  }
 }
 

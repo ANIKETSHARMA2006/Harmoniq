@@ -165,7 +165,7 @@ const useMusicStore = create<MusicStore>((set) => ({
                 songs: state.songs.filter(song => song._id !== id)
             }))
         } catch (error: any) {
-            set({error: error.message})
+            set({ error: error.response?.data?.message || error.message || "Failed to delete song" })
         } finally{
             set({isLoading: false})
         }
