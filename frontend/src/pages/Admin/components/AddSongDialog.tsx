@@ -71,7 +71,7 @@ const AddSongDialog = () => {
 			});
 			alert("Song added successfully");
 		} catch (error: any) {
-			alert("Failed to add song: " + error.message);
+			alert("Failed to add song: " + (error.response?.data?.message || error.message));
 		} finally {
 			setIsLoading(false);
 		}

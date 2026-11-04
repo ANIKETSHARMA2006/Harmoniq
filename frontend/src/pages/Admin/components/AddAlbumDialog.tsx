@@ -52,7 +52,7 @@ const AddAlbumDialog = () => {
 			setAlbumDialogOpen(false);
 			alert("Album created successfully");
 		} catch (error: any) {
-			alert("Failed to create album: " + error.message);
+			alert("Failed to create album: " + (error.response?.data?.message || error.message));
 		} finally {
 			setIsLoading(false);
 		}

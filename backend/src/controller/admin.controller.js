@@ -6,13 +6,18 @@ import mongoose from "mongoose"
 // healper function for cloudinary uploads
 const uploadToCloudinary = async(file)=>{
     try {
+        const config = cloudinary.config();
+        if (!config.cloud_name || !config.api_key || !config.api_secret) {
+            throw new Error("Cloudinary is not configured on the server");
+        }
+
         const result = await cloudinary.uploader.upload(file.tempFilePath,{
             resource_type: "auto",
         });
         return result.secure_url;
     } catch (error) {
-        console.log("Error in uploadtoCloudinary", error)
-        throw new Error("Error uploading to Cloudinary");
+        console.error("Error uploading file to Cloudinary", error);
+        throw error;
     }
 }
 
@@ -88,6 +93,11 @@ try {
     }
 
     const {title,artist,releaseYear} = req.body
+    const parsedReleaseYear = Number(releaseYear)
+    if (!title?.trim() || !artist?.trim() || !Number.isInteger(parsedReleaseYear)) {
+        return res.status(400).json({ message: "Title, artist, and a valid release year are required" });
+    }
+
     const {imageFile}= req.files
     const imageUrl= await uploadToCloudinary(imageFile)
 
@@ -95,13 +105,15 @@ try {
         title,
         artist,
         imageUrl,
-        releaseYear
+        releaseYear: parsedReleaseYear
     })
     await album.save()
     return res.status(201).json(album)
 } catch (error) {
-    console.log("error in the createAlnum", error);
-    return res.status(500).json({ message: "Internal server error" });
+    console.error("Error in createAlbum", error);
+    return res.status(500).json({
+        message: error instanceof Error ? error.message : "Internal server error",
+    });
 }
 }
 
