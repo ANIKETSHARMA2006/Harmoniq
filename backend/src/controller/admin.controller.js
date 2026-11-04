@@ -3,16 +3,35 @@ import {Album} from "../models/album.model.js"
 import cloudinary from "../config/cloudinary.js"
 import mongoose from "mongoose"
 
+const getErrorMessage = (error) => {
+    if (typeof error === "string" && error) return error;
+    if (error?.error?.message) return error.error.message;
+    if (error?.message) return error.message;
+
+    try {
+        const serializedError = JSON.stringify(error);
+        return serializedError && serializedError !== "{}"
+            ? serializedError
+            : "Internal server error";
+    } catch {
+        return "Internal server error";
+    }
+};
+
 // healper function for cloudinary uploads
 const uploadToCloudinary = async(file)=>{
     try {
+        if (!file?.tempFilePath) {
+            throw new Error("Uploaded image was not saved on the server");
+        }
+
         const config = cloudinary.config();
         if (!config.cloud_name || !config.api_key || !config.api_secret) {
             throw new Error("Cloudinary is not configured on the server");
         }
 
         const result = await cloudinary.uploader.upload(file.tempFilePath,{
-            resource_type: "auto",
+            resource_type: "image",
         });
         return result.secure_url;
     } catch (error) {
@@ -87,6 +106,7 @@ const deleteSong = async(req,res,next)=>{
 }
 
 const createAlbum = async(req,res,next)=>{
+let operation = "validating album data";
 try {
     if (!req.files?.imageFile) {
         return res.status(400).json({ message: "Please upload an album image" });
@@ -99,8 +119,10 @@ try {
     }
 
     const {imageFile}= req.files
+    operation = "uploading album artwork to Cloudinary";
     const imageUrl= await uploadToCloudinary(imageFile)
 
+    operation = "saving album to MongoDB";
     const album = new Album({
         title,
         artist,
@@ -110,9 +132,10 @@ try {
     await album.save()
     return res.status(201).json(album)
 } catch (error) {
-    console.error("Error in createAlbum", error);
+    const message = getErrorMessage(error);
+    console.error(`Error in createAlbum while ${operation}:`, error);
     return res.status(500).json({
-        message: error instanceof Error ? error.message : "Internal server error",
+        message,
     });
 }
 }
