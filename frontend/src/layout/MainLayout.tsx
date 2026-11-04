@@ -22,7 +22,7 @@ const MainLayout = () => {
       return () => window.removeEventListener("resize", checkMobile);
     },[])
   return (
-    <div className="h-screen bg-black text-white flex flex-col">
+    <div className="app-layout h-screen overflow-hidden bg-black text-white flex flex-col">
     <ResizablePanelGroup
       orientation="horizontal"
       className="h-screen p-1 w-full rounded-lg gap-x-1"

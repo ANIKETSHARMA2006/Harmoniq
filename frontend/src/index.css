@@ -128,3 +128,20 @@
     @apply font-sans;
   }
 }
+
+/* Keep the player layout scrollable without showing scrollbars. The admin
+   page is outside .app-layout, so it keeps its normal page scrollbar. */
+.app-layout [data-slot="scroll-area-scrollbar"] {
+  display: none;
+}
+
+.app-layout [data-slot="scroll-area-viewport"] {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.app-layout [data-slot="scroll-area-viewport"]::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
