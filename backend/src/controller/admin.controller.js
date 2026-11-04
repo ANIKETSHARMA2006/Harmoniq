@@ -4,6 +4,10 @@ import cloudinary from "../config/cloudinary.js"
 import mongoose from "mongoose"
 
 const getErrorMessage = (error) => {
+    if (error?.http_code === 403 || error?.statusCode === 403) {
+        return "Cloudinary rejected the upload (403). Check the Cloudinary cloud name, API key, API secret, and upload permissions in Render.";
+    }
+
     if (typeof error === "string" && error) return error;
     if (error?.error?.message) return error.error.message;
     if (error?.message) return error.message;
@@ -19,10 +23,10 @@ const getErrorMessage = (error) => {
 };
 
 // healper function for cloudinary uploads
-const uploadToCloudinary = async(file)=>{
+const uploadToCloudinary = async(file, resourceType = "auto")=>{
     try {
         if (!file?.tempFilePath) {
-            throw new Error("Uploaded image was not saved on the server");
+            throw new Error("Uploaded file was not saved on the server");
         }
 
         const config = cloudinary.config();
@@ -31,7 +35,7 @@ const uploadToCloudinary = async(file)=>{
         }
 
         const result = await cloudinary.uploader.upload(file.tempFilePath,{
-            resource_type: "image",
+            resource_type: resourceType,
         });
         return result.secure_url;
     } catch (error) {
@@ -42,23 +46,36 @@ const uploadToCloudinary = async(file)=>{
 
 
 const createSong =async(req,res,next)=>{
+let operation = "validating song data";
     try {
         if(!req.files || !req.files.audioFile || !req.files.imageFile){
             return res.status(400).json({ message: "Please upload all files"});
         }
         const {title, artist,albumId,duration}= req.body
+        const parsedDuration = Number(duration)
+        if (!title?.trim() || !artist?.trim() || !Number.isFinite(parsedDuration) || parsedDuration < 0) {
+            return res.status(400).json({ message: "Title, artist, and a valid duration are required" });
+        }
+        if (albumId && !mongoose.isValidObjectId(albumId)) {
+            return res.status(400).json({ message: "Invalid album ID" });
+        }
+
         const audioFile=req.files.audioFile
         const imageFile=req.files.imageFile
 
-        const audioUrl= await uploadToCloudinary(audioFile)
-        const imageUrl= await uploadToCloudinary(imageFile)
+        operation = "uploading audio to Cloudinary";
+        const audioUrl= await uploadToCloudinary(audioFile, "video")
+        operation = "uploading song artwork to Cloudinary";
+        const imageUrl= await uploadToCloudinary(imageFile, "image")
 
+        operation = "saving song to MongoDB";
         const song = new Song({
             title,
             artist,
             audioUrl,
             imageUrl,
             albumId: albumId || null,
+            duration: parsedDuration,
         })
         await song.save()
         if(albumId){
@@ -68,8 +85,9 @@ const createSong =async(req,res,next)=>{
         }
         res.status(201).json(song)
     } catch (error) {
-        console.log("Error in createSong", error);
-        res.status(500).json({ message: "Internal server error", error})
+        const message = getErrorMessage(error);
+        console.error(`Error in createSong while ${operation}:`, error);
+        res.status(500).json({ message })
     }
 }
 
