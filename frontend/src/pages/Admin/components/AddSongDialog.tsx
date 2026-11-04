@@ -55,9 +55,7 @@ const AddSongDialog = () => {
 			formData.append("imageFile", files.image);
 
 			await axiosInstance.post("/admin/songs", formData, {
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
+				// Axios adds the multipart boundary in the browser.
 			});
 
 			setNewSong({

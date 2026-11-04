@@ -83,6 +83,10 @@ const deleteSong = async(req,res,next)=>{
 
 const createAlbum = async(req,res,next)=>{
 try {
+    if (!req.files?.imageFile) {
+        return res.status(400).json({ message: "Please upload an album image" });
+    }
+
     const {title,artist,releaseYear} = req.body
     const {imageFile}= req.files
     const imageUrl= await uploadToCloudinary(imageFile)
@@ -94,10 +98,10 @@ try {
         releaseYear
     })
     await album.save()
-    
+    return res.status(201).json(album)
 } catch (error) {
     console.log("error in the createAlnum", error);
-    res.status(500).send("internal server error");
+    return res.status(500).json({ message: "Internal server error" });
 }
 }
 

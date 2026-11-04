@@ -11,7 +11,9 @@ const adminRouter = Router();
 
 adminRouter.post("/songs", protectRoute, requireAdmin, createSong);
 adminRouter.delete("/songs/:id", protectRoute, requireAdmin, deleteSong);
-adminRouter.post("/album", protectRoute, requireAdmin, createAlbum);
+// Keep the singular route as the canonical endpoint while accepting the
+// plural form used by older frontend builds.
+adminRouter.post(["/album", "/albums"], protectRoute, requireAdmin, createAlbum);
 adminRouter.delete("/album/:id", protectRoute, requireAdmin, deleteAlbum);
 adminRouter.get("/check", protectRoute, requireAdmin, checkAdmin);
 export default adminRouter;
