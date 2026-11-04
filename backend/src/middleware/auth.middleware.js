@@ -19,12 +19,15 @@ const requireAdmin = async (req, res, next) => {
         .json({ message: "Unauthorized - User must be logged in" });
     }
     const currentUser = await clerkClient.users.getUser(userId);
-    const configuredAdminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+    const configuredAdminEmails = (process.env.ADMIN_EMAIL || "")
+      .split(",")
+      .map((email) => email.trim().toLowerCase())
+      .filter(Boolean);
     const signedInEmail = currentUser.primaryEmailAddress?.emailAddress
       ?.trim()
       .toLowerCase();
-    const isAdmin = Boolean(configuredAdminEmail && signedInEmail) &&
-      configuredAdminEmail === signedInEmail;
+    const isAdmin = Boolean(signedInEmail) &&
+      configuredAdminEmails.includes(signedInEmail);
     if (!isAdmin) {
       return res
         .status(401)

@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/store/useAuthStore';
 import { useMusicStore } from '@/store/useMusicStore';
-import  { useEffect } from 'react'
+import  { useEffect} from 'react'
 import Header from './components/Header';
 import DashboardStats from './components/DashboardStats';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
