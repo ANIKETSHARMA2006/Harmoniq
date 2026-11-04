@@ -23,11 +23,17 @@ const requireAdmin = async (req, res, next) => {
       .split(",")
       .map((email) => email.trim().toLowerCase())
       .filter(Boolean);
-    const signedInEmail = currentUser.primaryEmailAddress?.emailAddress
-      ?.trim()
-      .toLowerCase();
-    const isAdmin = Boolean(signedInEmail) &&
-      configuredAdminEmails.includes(signedInEmail);
+    const signedInEmails = [
+      currentUser.primaryEmailAddress?.emailAddress,
+      ...(currentUser.emailAddresses || [])
+        .filter((email) => email.verification?.status === "verified")
+        .map((email) => email.emailAddress),
+    ]
+      .filter(Boolean)
+      .map((email) => email.trim().toLowerCase());
+    const isAdmin = signedInEmails.some((email) =>
+      configuredAdminEmails.includes(email),
+    );
     if (!isAdmin) {
       return res
         .status(401)
