@@ -3,8 +3,6 @@ import { useAuth, UserButton } from "@clerk/react";
 import { Link } from "react-router-dom";
 import SignInOAuthButtons from "./SignInOAuthButtons";
 import { cn } from "@/lib/utils";
-import { useAuthStore } from "@/store/useAuthStore";
-
 
 const Topbar = () => {
   const { isSignedIn } = useAuth();
