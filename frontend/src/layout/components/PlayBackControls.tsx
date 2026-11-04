@@ -178,7 +178,7 @@ export const PlaybackControls = () => {
 							step={1}
 							orientation='horizontal'
 							aria-label='Volume level'
-							className='w-24 min-w-24 shrink-0 hover:cursor-grab active:cursor-grabbing'
+							className='w-25 min-w-25 shrink-6 hover:cursor-grab active:cursor-grabbing'
 							onValueChange={handleVolumeChange}
 						/>
 					</div>
