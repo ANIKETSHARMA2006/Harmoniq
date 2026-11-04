@@ -8,7 +8,6 @@ import { useAuthStore } from "@/store/useAuthStore";
 
 const Topbar = () => {
   const { isSignedIn } = useAuth();
-  const {isAdmin}= useAuthStore();
   return (
     <div className="flex items-center justify-between p-4 sticky top-0 bg-zinc-900/75 text-white backdrop-blur-md z-10">
       {/* Logo */}
@@ -20,7 +19,7 @@ const Topbar = () => {
       </div>
 
       <div className="flex items-center gap-4">
-        {isAdmin ? (
+        {isSignedIn ? (
           <Link
   to="/admin"
   className={cn(
