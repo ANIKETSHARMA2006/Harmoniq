@@ -4,19 +4,20 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import LeftSidebar from "./components/LeftSidebar";
 import FriendsActivity from "./components/FriendsActivity";
 import AudioPlayer from "./components/AudioPlayer";
 import PlayBackControls from "./components/PlayBackControls";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 const MainLayout = () => {
   const [isMobile, setIsMobile] = useState(
     () => typeof window !== "undefined" && window.innerWidth < 768
   );
+  const { pathname } = useLocation();
 
   // GSAP refs
   const leftPanelRef = useRef<HTMLDivElement>(null);
@@ -38,8 +39,8 @@ const MainLayout = () => {
     };
   }, []);
 
-  // GSAP entrance animation
- useEffect(() => {
+  // GSAP sidebar entrance animation
+  useLayoutEffect(() => {
   const ctx = gsap.context(() => {
 
     const tl = gsap.timeline();
@@ -87,27 +88,38 @@ const MainLayout = () => {
       }
     }
 
-    // 3. Center panel - rubber pop
-    tl.fromTo(
-      centerPanelRef.current,
-      {
-        scale: 0.85,
-        opacity: 0,
-      },
-      {
-        scale: 1,
-        opacity: 1,
-        duration: 1,
-        ease: "elastic.out(1, 0.55)",
-        force3D: true,
-      },
-      "-=0.5"
-    );
-
   });
 
   return () => ctx.revert();
 }, [isMobile]);
+
+  // Replay the center-panel pop when the route changes, including on phones.
+  useLayoutEffect(() => {
+    const centerPanel = centerPanelRef.current;
+    if (!centerPanel) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        centerPanel,
+        {
+          scale: isMobile ? 0.96 : 0.85,
+          y: isMobile ? 12 : 0,
+          opacity: 0,
+        },
+        {
+          scale: 1,
+          y: 0,
+          opacity: 1,
+          duration: isMobile ? 0.65 : 1,
+          ease: isMobile ? "power3.out" : "elastic.out(1, 0.55)",
+          clearProps: "transform,opacity",
+          force3D: true,
+        }
+      );
+    }, centerPanel);
+
+    return () => ctx.revert();
+  }, [pathname, isMobile]);
 
   return (
     <div className="app-layout flex h-dvh w-full flex-col overflow-hidden bg-background text-white">
