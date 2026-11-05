@@ -110,7 +110,7 @@ const MainLayout = () => {
 }, [isMobile]);
 
   return (
-    <div className="app-layout flex h-screen w-full flex-col overflow-hidden bg-background text-white">
+    <div className="app-layout flex h-dvh w-full flex-col overflow-hidden bg-background text-white">
 
       <ResizablePanelGroup
         orientation="horizontal"

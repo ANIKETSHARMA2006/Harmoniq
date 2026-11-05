@@ -34,9 +34,9 @@ const HomePage = () => {
   },[initializeQueue])
 
   return (
-    <main className='rounded-md overflow-hidden h-full bg-linear-to-b from-zinc-900/70 via-background to-background '>
+    <main className='flex h-full min-h-0 flex-col overflow-hidden rounded-md bg-linear-to-b from-zinc-900/70 via-background to-background'>
       <Topbar />
-      <ScrollArea className="h-[calc(100vh-176px)] sm:h-[calc(100vh-160px)]">
+      <ScrollArea className="min-h-0 flex-1">
         <div className='p-4 sm:p-6'>
           <h1 className='text-2xl sm:text-3xl font-bold mb-6'>Good afternoon</h1>
           <FeaturedSection/>

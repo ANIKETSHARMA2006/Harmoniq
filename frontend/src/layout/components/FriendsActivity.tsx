@@ -48,7 +48,7 @@ const FriendsActivity = () => {
 );
 
   return (
-    <div className='h-full rounded-xl border border-white/5 bg-card/70 flex flex-col'>
+    <div className='flex h-full min-h-0 flex-col rounded-xl border border-white/5 bg-card/70'>
       <div className='flex items-center justify-between border-b border-white/10 p-4'>
         <div className='flex items-center gap-2'>
             <User className='size-5 shrink-0'/>
@@ -57,7 +57,7 @@ const FriendsActivity = () => {
       </div>
       {!user && <LoginPrompt/>}
 
-      <ScrollArea className="flex-1">
+      <ScrollArea className="min-h-0 flex-1">
         <div className='p-4 space-y-4'>
             {error && <p className='text-sm text-red-400'>{error}</p>}
             {users.map((user)=>(

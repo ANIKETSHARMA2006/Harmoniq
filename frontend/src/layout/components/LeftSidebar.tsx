@@ -17,7 +17,7 @@ const LeftSidebar = () => {
     }, [fetchAlbums])
 
     return (
-        <div className='h-full flex flex-col gap-2 bg-background'>
+        <div className='flex h-full min-h-0 flex-col gap-2 bg-background'>
 
             {/* navigation menu */}
             <div className='rounded-xl border border-white/5 bg-card/70 p-0 md:p-4 '>
@@ -49,7 +49,7 @@ const LeftSidebar = () => {
             </div>
 
             {/* library section */}
-            <div className='flex-1 rounded-xl border border-white/5 bg-card/70 p-0 md:p-4'>
+            <div className='flex min-h-0 flex-1 flex-col rounded-xl border border-white/5 bg-card/70 p-0 md:p-4'>
                 <div className='flex items-center justify-between mb-4'>
                     <div className='flex items-center text-white px-0 md:px-2'>
                         <Library className='size-5 mr-2' />
@@ -57,7 +57,7 @@ const LeftSidebar = () => {
                     </div>
                 </div>
 
-                <ScrollArea className="h-[calc(100vh-300px)]">
+                <ScrollArea className="min-h-0 flex-1">
                     <div className='space-y-2'>
                         {isLoading ? (
                             <PlaylistSkeleton />

@@ -54,7 +54,7 @@ const AuthProvider = ({children}:{children: React.ReactNode}) => {
         cancelled = true;
       };
     }, [getToken, isLoaded, isSignedIn, checkAdminStatus, reset]);
- if(loading) return (<div className="h-screen w-full flex items-center justify-center"><Loader className="size-8 text-white animate-spin" /></div>);
+ if(loading) return (<div className="flex h-dvh w-full items-center justify-center"><Loader className="size-8 text-white animate-spin" /></div>);
  return (
     <div>
       {children}
