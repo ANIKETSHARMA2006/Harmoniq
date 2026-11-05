@@ -112,7 +112,7 @@ const AdminPage = () => {
   return (
     <div
       ref={pageRef}
-      className="min-h-screen bg-linear-to-b from-zinc-900 via-zinc-900 to-black text-zinc-100 p-8"
+      className="min-h-screen bg-background p-4 text-white sm:p-8"
     >
       <div className="admin-header">
         <Header />

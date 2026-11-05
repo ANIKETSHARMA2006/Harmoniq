@@ -79,12 +79,14 @@ const AddSongDialog = () => {
 
 	return (
 		<Dialog open={songDialogOpen} onOpenChange={setSongDialogOpen}>
-			<DialogTrigger>
-				<Button className='bg-emerald-500 hover:bg-emerald-600 text-black'>
+			<DialogTrigger
+				render={
+					<Button className='bg-emerald-500 hover:bg-emerald-600 text-black'>
 					<Plus className='mr-2 h-4 w-4' />
 					Add Song
-				</Button>
-			</DialogTrigger>
+					</Button>
+				}
+			/>
 
 			<DialogContent className='bg-zinc-900 border-zinc-700 max-h-[80vh] overflow-auto'>
 				<DialogHeader>

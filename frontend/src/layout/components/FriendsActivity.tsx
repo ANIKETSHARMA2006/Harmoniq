@@ -48,8 +48,8 @@ const FriendsActivity = () => {
 );
 
   return (
-    <div className='h-full bg-zinc-900 rounded-lg flex flex-col'>
-      <div className='p-4 flex justify-between items-center border-b border-zinc-800'>
+    <div className='h-full rounded-xl border border-white/5 bg-card/70 flex flex-col'>
+      <div className='flex items-center justify-between border-b border-white/10 p-4'>
         <div className='flex items-center gap-2'>
             <User className='size-5 shrink-0'/>
             <h2 className='font-semibold'>What they're listening to</h2>

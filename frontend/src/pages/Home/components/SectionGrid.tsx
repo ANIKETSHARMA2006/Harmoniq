@@ -1,6 +1,8 @@
 import type { Song } from "@/types"
 import SectionGridSkeleton from "./SectionGridSkeleton";
 import { Button } from "@/components/ui/button";
+import { usePlayerStore } from "@/store/usePlayerStore";
+import type { KeyboardEvent } from "react";
 import PlayButton from "./PlayButton";
 type SectionGridProp = {
     title: string;
@@ -8,6 +10,14 @@ type SectionGridProp = {
     isLoading: boolean;
 }
 const SectionGrid = ({title,songs,isLoading}:SectionGridProp) => {
+  const setCurrentSong = usePlayerStore((state) => state.setCurrentSong)
+
+  const handleCardKeyDown = (event: KeyboardEvent<HTMLDivElement>, song: Song) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault()
+      setCurrentSong(song)
+    }
+  }
 
   if(isLoading) return <SectionGridSkeleton />
     
@@ -20,11 +30,16 @@ const SectionGrid = ({title,songs,isLoading}:SectionGridProp) => {
 				</Button>
 			</div>
 
-			<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
+			<div className='grid grid-cols-2 gap-3 sm:gap-4'>
 				{songs.map((song) => (
 					<div
 						key={song._id}
-						className='bg-zinc-800/40 p-4 rounded-md hover:bg-zinc-700/40 transition-all group cursor-pointer'
+						onClick={() => setCurrentSong(song)}
+						onKeyDown={(event) => handleCardKeyDown(event, song)}
+						role="button"
+						tabIndex={0}
+						aria-label={`Play ${song.title} by ${song.artist}`}
+						className='group cursor-pointer rounded-xl border border-white/5 bg-white/[0.035] p-4 transition-all hover:-translate-y-1 hover:border-emerald-400/20 hover:bg-white/[0.07] hover:shadow-xl hover:shadow-black/20'
 					>
 						<div className='relative mb-4'>
 							<div className='aspect-square rounded-md shadow-lg overflow-hidden'>

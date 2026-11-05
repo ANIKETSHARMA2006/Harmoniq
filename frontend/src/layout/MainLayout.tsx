@@ -14,7 +14,9 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 const MainLayout = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < 768
+  );
 
   // GSAP refs
   const leftPanelRef = useRef<HTMLDivElement>(null);
@@ -43,29 +45,11 @@ const MainLayout = () => {
     const tl = gsap.timeline();
 
     // 1. Left sidebar - elastic entrance
-    tl.fromTo(
-      leftPanelRef.current,
-      {
-        x: -80,
-        opacity: 0,
-        scaleX: 0.92,
-      },
-      {
-        x: 0,
-        opacity: 1,
-        scaleX: 1,
-        duration: 1.3,
-        ease: "elastic.out(1, 0.65)",
-        force3D: true,
-      }
-    );
-
-    // 2. Right sidebar - elastic entrance
     if (!isMobile) {
       tl.fromTo(
-        rightPanelRef.current,
+        leftPanelRef.current,
         {
-          x: 80,
+          x: -80,
           opacity: 0,
           scaleX: 0.92,
         },
@@ -76,9 +60,31 @@ const MainLayout = () => {
           duration: 1.3,
           ease: "elastic.out(1, 0.65)",
           force3D: true,
-        },
-        "-=0.65"
+        }
       );
+    }
+
+    // 2. Right sidebar - elastic entrance
+    if (!isMobile) {
+      if (rightPanelRef.current) {
+        tl.fromTo(
+          rightPanelRef.current,
+          {
+            x: 80,
+            opacity: 0,
+            scaleX: 0.92,
+          },
+          {
+            x: 0,
+            opacity: 1,
+            scaleX: 1,
+            duration: 1.3,
+            ease: "elastic.out(1, 0.65)",
+            force3D: true,
+          },
+          "-=0.65"
+        );
+      }
     }
 
     // 3. Center panel - rubber pop
@@ -101,41 +107,38 @@ const MainLayout = () => {
   });
 
   return () => ctx.revert();
-}, []);
+}, [isMobile]);
 
   return (
-    <div className="app-layout flex h-screen w-full flex-col overflow-hidden bg-black text-white">
+    <div className="app-layout flex h-screen w-full flex-col overflow-hidden bg-background text-white">
 
       <ResizablePanelGroup
         orientation="horizontal"
-        className="h-screen w-full gap-x-1 overflow-hidden rounded-lg p-1"
+        className="min-h-0 flex-1 w-full gap-x-1 overflow-hidden rounded-lg p-0 sm:p-1"
       >
         {/* Audio Player */}
         <AudioPlayer />
 
         {/* Left Sidebar */}
-        <ResizablePanel
-          defaultSize="15%"
-          minSize={isMobile ? "0%" : "15%"}
-          maxSize="25%"
-        >
-          <div className="h-full w-full overflow-hidden">
-            <div
-              ref={leftPanelRef}
-              className="h-full w-full"
-            >
-              <LeftSidebar />
-            </div>
-          </div>
-        </ResizablePanel>
+        {!isMobile && (
+          <>
+            <ResizablePanel defaultSize="15%" minSize="15%" maxSize="25%">
+              <div className="h-full w-full overflow-hidden">
+                <div ref={leftPanelRef} className="h-full w-full">
+                  <LeftSidebar />
+                </div>
+              </div>
+            </ResizablePanel>
 
-        <ResizableHandle
-          className="transition duration-0 hover:bg-gray-400"
-          withHandle={true}
-        />
+            <ResizableHandle
+              className="w-1 transition duration-0 hover:bg-gray-400"
+              withHandle={true}
+            />
+          </>
+        )}
 
         {/* Center Panel */}
-        <ResizablePanel defaultSize={isMobile ? 80 : 70}>
+        <ResizablePanel defaultSize={isMobile ? 100 : 70}>
           <div className="h-full w-full overflow-hidden">
             <div
               ref={centerPanelRef}
@@ -150,7 +153,7 @@ const MainLayout = () => {
         {!isMobile && (
           <>
             <ResizableHandle
-              className="transition duration-0 hover:bg-gray-400"
+              className="transition w-1 duration-0 hover:bg-gray-400"
               withHandle={true}
             />
 
@@ -165,7 +168,7 @@ const MainLayout = () => {
                   ref={rightPanelRef}
                   className="h-full w-full"
                 >
-                  <div className="h-full overflow-y-auto scrollbar-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  <div className="h-full overflow-y-auto scrollbar-none  [&::-webkit-scrollbar]:hidden">
                     <span className="font-semibold">
                       <FriendsActivity />
                     </span>

@@ -215,14 +215,14 @@ export const PlaybackControls = () => {
   return (
     <footer
       ref={footerRef}
-      className="h-20 sm:h-24 rounded-md bg-black border-t px-4"
+      className="h-24 shrink-0 rounded-xl border-t border-white/10 bg-black/95 px-3 shadow-[0_-8px_30px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:h-20 sm:px-4"
     >
-      <div className="flex justify-between items-center h-full max-w-[1800px] mx-auto">
+      <div className="mx-auto flex h-full max-w-[1800px] flex-col justify-center gap-0 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
 
         {/* Currently Playing Song */}
         <div
           ref={songInfoRef}
-          className="hidden sm:flex items-center gap-4 min-w-45 w-[30%]"
+          className="flex min-w-0 w-full items-center gap-2 sm:min-w-45 sm:w-[30%] sm:gap-4"
         >
           {currentSong && (
             <>
@@ -230,15 +230,15 @@ export const PlaybackControls = () => {
                 ref={albumArtRef}
                 src={currentSong.imageUrl}
                 alt={currentSong.title}
-                className="w-14 h-14 object-cover rounded-md shadow-lg"
+                className="size-8 shrink-0 rounded-md object-cover shadow-lg sm:size-12"
               />
 
               <div className="flex-1 min-w-0">
-                <div className="song-details font-medium truncate hover:underline cursor-pointer">
+                <div className="song-details truncate font-medium hover:underline">
                   {currentSong.title}
                 </div>
 
-                <div className="song-details text-sm text-zinc-400 truncate hover:underline cursor-pointer">
+                <div className="song-details truncate text-sm text-zinc-400 hover:underline">
                   {currentSong.artist}
                 </div>
               </div>
@@ -247,7 +247,7 @@ export const PlaybackControls = () => {
         </div>
 
         {/* Player Controls */}
-        <div className="flex flex-col items-center gap-2 flex-1 max-w-full sm:max-w-[45%]">
+        <div className="flex w-full max-w-full flex-col items-center gap-1 sm:max-w-[45%] sm:gap-2">
 
           <div className="flex items-center gap-4 sm:gap-6">
 
@@ -318,7 +318,7 @@ export const PlaybackControls = () => {
           </div>
 
           {/* Progress Bar */}
-          <div className="hidden sm:flex items-center gap-2 w-full min-w-0">
+          <div className="flex w-full min-w-0 items-center gap-2 pb-1 sm:pb-0">
 
             <div className="shrink-0 whitespace-nowrap tabular-nums text-xs text-zinc-400">
               {formatTime(currentTime)}
