@@ -16,8 +16,6 @@ const LeftSidebar = () => {
         fetchAlbums();
     }, [fetchAlbums])
 
-    console.log({ albums });
-
     return (
         <div className='h-full flex flex-col gap-2 bg-background'>
 

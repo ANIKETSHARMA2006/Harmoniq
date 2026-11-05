@@ -25,7 +25,7 @@ const FeaturedSection = () => {
     if(error) return <p className="text-red-500 mb-4 text-lg">{error}</p>
 
   return (
-    <div className='grid grid-cols-2 gap-3 mb-8 sm:gap-4'>
+    <div className='grid grid-cols-2 gap-3 mb-8 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3'>
 			{featuredSongs.map((song) => (
 				<div
 					key={song._id}

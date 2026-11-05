@@ -25,12 +25,8 @@ export const useAuthStore = create<AuthStore>((set)=>({
             },
         });
 
-        console.log("Admin API response:", response.data);
-
         set({ isAdmin: response.data.admin === true });
     } catch (error: any) {
-        console.error("Admin check error:", error.response?.status, error.response?.data || error.message);
-
         set({
             isAdmin: false,
             error: error.response?.data?.message || "Admin check failed"

@@ -131,7 +131,7 @@ const MainLayout = () => {
             </ResizablePanel>
 
             <ResizableHandle
-              className="w-1 transition duration-0 hover:bg-gray-400"
+              className="w-0.5 transition duration-0 hover:bg-gray-400"
               withHandle={true}
             />
           </>
@@ -153,7 +153,7 @@ const MainLayout = () => {
         {!isMobile && (
           <>
             <ResizableHandle
-              className="transition w-1 duration-0 hover:bg-gray-400"
+              className="transition w-0.5 duration-0 hover:bg-gray-400"
               withHandle={true}
             />
 

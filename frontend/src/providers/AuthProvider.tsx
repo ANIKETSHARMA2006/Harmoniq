@@ -43,9 +43,8 @@ const AuthProvider = ({children}:{children: React.ReactNode}) => {
           if (token) {
             await checkAdminStatus(token);
           }
-        } catch (error) {
+        } catch {
           updateApiToken(null);
-          console.error("Error fetching token:", error);
         } finally {
           if (!cancelled) setLoading(false);
         }
