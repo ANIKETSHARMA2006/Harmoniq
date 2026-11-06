@@ -47,12 +47,13 @@ export const PlaybackControls = () => {
   const [volume, setVolume] = useState(75);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const currentSongId = currentSong?._id;
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // GSAP refs
   const footerRef = useRef<HTMLElement>(null);
+  const songInfoRef = useRef<HTMLDivElement>(null);
+  const albumArtRef = useRef<HTMLImageElement>(null);
 
   // Audio event listeners
   useEffect(() => {
@@ -146,14 +147,14 @@ export const PlaybackControls = () => {
 
   // Animate song information whenever the song changes
   useLayoutEffect(() => {
-    if (!currentSongId) return;
+    if (!currentSong) return;
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline();
 
       // Album artwork pop
       tl.fromTo(
-        ".player-album-art",
+        albumArtRef.current,
         {
           scale: 0.7,
           rotation: -12,
@@ -185,10 +186,10 @@ export const PlaybackControls = () => {
         "-=0.4"
       );
 
-    }, footerRef);
+    }, songInfoRef);
 
     return () => ctx.revert();
-  }, [currentSongId]);
+  }, [currentSong?._id]);
 
   // Seek control
   const handleSeek = (value: number | readonly number[]): void => {
@@ -221,11 +222,13 @@ export const PlaybackControls = () => {
 
         {/* Currently Playing Song */}
         <div
+          ref={songInfoRef}
           className="flex min-w-0 w-full items-center gap-2 md:min-w-45 md:w-[30%] md:gap-4"
         >
           {currentSong && (
             <>
               <img
+                ref={albumArtRef}
                 src={currentSong.imageUrl}
                 alt={currentSong.title}
                 className="player-album-art size-8 shrink-0 rounded-md object-cover shadow-lg md:size-12"

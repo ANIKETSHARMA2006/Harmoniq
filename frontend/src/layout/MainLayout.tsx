@@ -4,7 +4,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import LeftSidebar from "./components/LeftSidebar";
 import FriendsActivity from "./components/FriendsActivity";
 import AudioPlayer from "./components/AudioPlayer";
@@ -17,8 +17,6 @@ const MainLayout = () => {
   const [isMobile, setIsMobile] = useState(
     () => typeof window !== "undefined" && window.innerWidth < 768
   );
-  const { pathname } = useLocation();
-
   // GSAP refs
   const leftPanelRef = useRef<HTMLDivElement>(null);
   const rightPanelRef = useRef<HTMLDivElement>(null);
@@ -39,35 +37,29 @@ const MainLayout = () => {
     };
   }, []);
 
-  // GSAP sidebar entrance animation
+  // GSAP entrance timeline: left sidebar, friends activity, then center page.
   useLayoutEffect(() => {
-  const ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline();
 
-    const tl = gsap.timeline();
+      if (!isMobile) {
+        tl.fromTo(
+          leftPanelRef.current,
+          {
+            x: -80,
+            opacity: 0,
+            scaleX: 0.92,
+          },
+          {
+            x: 0,
+            opacity: 1,
+            scaleX: 1,
+            duration: 1.3,
+            ease: "elastic.out(1, 0.65)",
+            force3D: true,
+          }
+        );
 
-    // 1. Left sidebar - elastic entrance
-    if (!isMobile) {
-      tl.fromTo(
-        leftPanelRef.current,
-        {
-          x: -80,
-          opacity: 0,
-          scaleX: 0.92,
-        },
-        {
-          x: 0,
-          opacity: 1,
-          scaleX: 1,
-          duration: 1.3,
-          ease: "elastic.out(1, 0.65)",
-          force3D: true,
-        }
-      );
-    }
-
-    // 2. Right sidebar - elastic entrance
-    if (!isMobile) {
-      if (rightPanelRef.current) {
         tl.fromTo(
           rightPanelRef.current,
           {
@@ -86,40 +78,26 @@ const MainLayout = () => {
           "-=0.65"
         );
       }
-    }
 
-  });
-
-  return () => ctx.revert();
-}, [isMobile]);
-
-  // Replay the center-panel pop when the route changes, including on phones.
-  useLayoutEffect(() => {
-    const centerPanel = centerPanelRef.current;
-    if (!centerPanel) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        centerPanel,
+      tl.fromTo(
+        centerPanelRef.current,
         {
-          scale: isMobile ? 0.96 : 0.85,
-          y: isMobile ? 12 : 0,
+          scale: 0.85,
           opacity: 0,
         },
         {
           scale: 1,
-          y: 0,
           opacity: 1,
-          duration: isMobile ? 0.65 : 1,
-          ease: isMobile ? "power3.out" : "elastic.out(1, 0.55)",
-          clearProps: "transform,opacity",
+          duration: 1,
+          ease: "elastic.out(1, 0.55)",
           force3D: true,
-        }
+        },
+        "-=0.5"
       );
-    }, centerPanel);
+    });
 
     return () => ctx.revert();
-  }, [pathname, isMobile]);
+  }, [isMobile]);
 
   return (
     <div className="app-layout flex h-dvh w-full flex-col overflow-hidden bg-background text-white">
