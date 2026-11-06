@@ -50,7 +50,7 @@ app.use(fileUpload({
     tempFileDir: path.join(__dirname,"temp"),
     createParentPath: true,
     limits:{
-        fileSize: 10*1024*1024
+        fileSize: 30*1024*1024
     },
 }))
 
