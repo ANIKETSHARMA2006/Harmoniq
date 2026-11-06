@@ -87,7 +87,7 @@ const AlbumPage = () => {
       <div ref={pageRef} className="h-full w-full">
         <ScrollArea className="h-full rounded-md">
           <div className="relative min-h-full overflow-hidden bg-background">
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] overflow-hidden" aria-hidden="true">
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-136 overflow-hidden" aria-hidden="true">
               <img
                 src={currentAlbum.imageUrl}
                 alt=""
@@ -107,7 +107,7 @@ const AlbumPage = () => {
                 </Link>
               </div>
 
-              <section className="flex flex-col items-center gap-7 px-4 pb-8 pt-8 sm:flex-row sm:items-end sm:gap-8 sm:px-8 sm:pb-10 sm:pt-14">
+              <section className="flex flex-col items-center gap-7 px-4 pb-8 pt-4 sm:flex-row sm:items-end sm:gap-8 sm:px-8 sm:pb-10 sm:pt-8">
                 <img
                   src={currentAlbum.imageUrl}
                   alt={currentAlbum.title}

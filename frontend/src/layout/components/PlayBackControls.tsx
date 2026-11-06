@@ -402,15 +402,15 @@ export const PlaybackControls = () => {
       </div>
 
       {/* Compact mobile player */}
-      <div className="relative flex h-full min-h-[92px] items-center gap-2 overflow-hidden rounded-xl border border-white/10 bg-zinc-950 px-2.5 pb-4 pt-2.5 shadow-[0_8px_30px_rgba(0,0,0,0.4)] md:hidden">
+      <div className="relative flex h-full min-h-23 items-center gap-2 overflow-hidden rounded-xl border border-white/10 bg-zinc-950 px-2.5 pb-4 pt-2.5 shadow-[0_8px_30px_rgba(0,0,0,0.4)] md:hidden">
         {currentSong ? (
           <img
             src={currentSong.imageUrl}
             alt={currentSong.title}
-            className="player-album-art size-[68px] shrink-0 rounded-lg object-cover shadow-lg"
+            className="player-album-art size-17 shrink-0 rounded-lg object-cover shadow-lg"
           />
         ) : (
-          <div className="size-[68px] shrink-0 rounded-lg bg-zinc-900" />
+          <div className="size-17 shrink-0 rounded-lg bg-zinc-900" />
         )}
 
         <div className="min-w-0 flex-1 px-1 text-center">
