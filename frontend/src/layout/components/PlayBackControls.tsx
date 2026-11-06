@@ -216,7 +216,7 @@ export const PlaybackControls = () => {
   return (
     <footer
       ref={footerRef}
-      className="min-h-[108px] shrink-0 rounded-2xl border border-white/10 bg-black px-2 py-2 shadow-[0_-8px_30px_rgba(0,0,0,0.45)] backdrop-blur-xl md:h-20 md:min-h-0 md:rounded-xl md:border-t md:border-x-0 md:border-b-0 md:px-4 md:py-0"
+      className="min-h-27 shrink-0 rounded-2xl border border-white/10 bg-black px-2 py-2 shadow-[0_-8px_30px_rgba(0,0,0,0.45)] backdrop-blur-xl md:h-20 md:min-h-0 md:rounded-xl md:border-t md:border-x-0 md:border-b-0 md:px-4 md:py-0"
     >
       <div className="mx-auto hidden h-full max-w-[1800px] flex-col justify-center gap-0 md:flex md:flex-row md:items-center md:justify-between md:gap-0">
 
@@ -442,7 +442,7 @@ export const PlaybackControls = () => {
             variant="ghost"
             onClick={playNext}
             disabled={!currentSong}
-            className="size-9 rounded-full bg-emerald-500 text-black hover:bg-emerald-400"
+            className="size-9 rounded-full text-emerald-400 hover:bg-emerald-400/10 hover:text-emerald-300"
             aria-label="Next song"
           >
             <SkipForward className="size-5" />

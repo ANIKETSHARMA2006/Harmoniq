@@ -25,7 +25,7 @@ const FeaturedSection = () => {
     if(error) return <p className="text-red-500 mb-4 text-lg">{error}</p>
 
   return (
-    <div className='grid grid-cols-2 gap-3 mb-8 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3'>
+    <div className='mb-8 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3'>
 			{featuredSongs.map((song) => (
 				<div
 					key={song._id}
@@ -34,17 +34,19 @@ const FeaturedSection = () => {
 					role="button"
 					tabIndex={0}
 					aria-label={`Play ${song.title} by ${song.artist}`}
-					className='group relative flex items-center overflow-hidden rounded-xl border border-white/5 bg-white/[0.04]
+					className='group relative flex min-w-0 items-center overflow-hidden rounded-xl border border-white/5 bg-white/[0.04]
 		         shadow-lg shadow-black/10 transition-all hover:-translate-y-0.5 hover:border-emerald-400/20 hover:bg-white/[0.08] hover:shadow-emerald-950/20'
 				>
-					<img
-						src={song.imageUrl}
-						alt={song.title}
-						className='w-16 sm:w-20 h-16 sm:h-20 object-cover shrink-0'
-					/>
-					<div className='flex-1 p-4'>
-						<p className='font-medium truncate'>{song.title}</p>
-						<p className='text-sm text-zinc-400 truncate'>{song.artist}</p>
+					<div className='h-20 w-20 shrink-0 overflow-hidden bg-zinc-900 sm:h-24 sm:w-24'>
+						<img
+							src={song.imageUrl}
+							alt={song.title}
+							className='h-full w-full object-cover transition-transform duration-300 group-hover:scale-105'
+						/>
+					</div>
+					<div className='min-w-0 flex-1 p-3 pr-10 sm:p-4 sm:pr-12'>
+						<p className='truncate font-medium'>{song.title}</p>
+						<p className='truncate text-sm text-zinc-400'>{song.artist}</p>
 					</div>
 					<PlayButton song={song}/>
 				</div>

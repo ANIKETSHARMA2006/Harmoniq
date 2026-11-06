@@ -39,21 +39,20 @@ const SectionGrid = ({title,songs,isLoading}:SectionGridProp) => {
 						role="button"
 						tabIndex={0}
 						aria-label={`Play ${song.title} by ${song.artist}`}
-						className='group cursor-pointer rounded-xl border border-white/5 bg-white/[0.035] p-4 transition-all hover:-translate-y-1 hover:border-emerald-400/20 hover:bg-white/[0.07] hover:shadow-xl hover:shadow-black/20'
+						className='group min-w-0 cursor-pointer overflow-hidden rounded-xl border border-white/5 bg-white/[0.035] p-3 transition-all hover:-translate-y-1 hover:border-emerald-400/20 hover:bg-white/[0.07] hover:shadow-xl hover:shadow-black/20 sm:p-4'
 					>
 						<div className='relative mb-4'>
-							<div className='aspect-square rounded-md shadow-lg overflow-hidden'>
+							<div className='aspect-square w-full overflow-hidden rounded-lg bg-zinc-900 shadow-lg ring-1 ring-white/5'>
 								<img
 									src={song.imageUrl}
 									alt={song.title}
-									className='w-full h-full object-cover transition-transform duration-300 
-									group-hover:scale-105'
+									className='block h-full w-full object-cover transition-transform duration-300 group-hover:scale-105'
 								/>
 							</div>
 							<PlayButton song={song}/>
 						</div>
-						<h3 className='font-medium mb-2 truncate'>{song.title}</h3>
-						<p className='text-sm text-zinc-400 truncate'>{song.artist}</p>
+						<h3 className='mb-2 min-w-0 truncate font-medium'>{song.title}</h3>
+						<p className='min-w-0 truncate text-sm text-zinc-400'>{song.artist}</p>
 					</div>
 				))}
 			</div>
