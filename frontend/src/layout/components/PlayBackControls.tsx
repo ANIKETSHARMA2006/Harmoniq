@@ -466,7 +466,7 @@ export const PlaybackControls = () => {
           step={1}
           disabled={!currentSong}
           aria-label="Playback progress"
-          className="absolute inset-x-2.5 bottom-1.5 h-2 [&_[data-slot=slider-range]]:bg-emerald-400 [&_[data-slot=slider-thumb]]:size-2"
+          className="absolute inset-x-3 bottom-1.5 w-auto! min-w-0 h-2 data-[slot=slider-range]:bg-white **:data-[slot=slider-thumb]:size-2"
           onValueChange={handleSeek}
         />
       </div>
