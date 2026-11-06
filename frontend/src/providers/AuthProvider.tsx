@@ -1,24 +1,26 @@
 import { useAuth } from "@clerk/react";
-import axiosInstance from "../lib/axios";
+import { setTokenProvider } from "../lib/axios";
 import { Loader } from "lucide-react";
-import  { useState, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useAuthStore } from "@/store/useAuthStore";
-
-
-
-const updateApiToken = (token: string| null) =>  {
-  if (token) {
-    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  } 
-  else {
-    delete axiosInstance.defaults.headers.common['Authorization'];
-  }
-}
 
 const AuthProvider = ({children}:{children: React.ReactNode}) => {
     const {getToken, isLoaded, isSignedIn} = useAuth();
     const [loading, setLoading] = useState(true);
     const { checkAdminStatus, reset } = useAuthStore();
+
+    const getApiToken = useCallback(async () => {
+      if (!isLoaded || !isSignedIn) return null;
+      return getToken();
+    }, [getToken, isLoaded, isSignedIn]);
+
+    // Register the provider instead of storing one token in Axios defaults.
+    // Clerk can then refresh an expired token after the tab has been idle.
+    useEffect(() => {
+      setTokenProvider(isLoaded && isSignedIn ? getApiToken : null);
+
+      return () => setTokenProvider(null);
+    }, [getApiToken, isLoaded, isSignedIn]);
 
     useEffect(() => {
       if (!isLoaded) return;
@@ -29,7 +31,6 @@ const AuthProvider = ({children}:{children: React.ReactNode}) => {
         setLoading(true);
 
         if (!isSignedIn) {
-          updateApiToken(null);
           reset();
           setLoading(false);
           return;
@@ -39,12 +40,11 @@ const AuthProvider = ({children}:{children: React.ReactNode}) => {
           const token = await getToken();
           if (cancelled) return;
 
-          updateApiToken(token);
           if (token) {
             await checkAdminStatus(token);
           }
         } catch {
-          updateApiToken(null);
+          reset();
         } finally {
           if (!cancelled) setLoading(false);
         }

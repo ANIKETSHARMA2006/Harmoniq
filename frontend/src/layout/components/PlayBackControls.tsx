@@ -4,6 +4,7 @@ import { Slider } from "@/components/ui/slider";
 import { usePlayerStore } from "@/store/usePlayerStore";
 
 import {
+  Bluetooth,
   Laptop2,
   ListMusic,
   Mic2,
@@ -46,13 +47,12 @@ export const PlaybackControls = () => {
   const [volume, setVolume] = useState(75);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const currentSongId = currentSong?._id;
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // GSAP refs
   const footerRef = useRef<HTMLElement>(null);
-  const songInfoRef = useRef<HTMLDivElement>(null);
-  const albumArtRef = useRef<HTMLImageElement>(null);
 
   // Audio event listeners
   useEffect(() => {
@@ -146,14 +146,14 @@ export const PlaybackControls = () => {
 
   // Animate song information whenever the song changes
   useLayoutEffect(() => {
-    if (!currentSong) return;
+    if (!currentSongId) return;
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline();
 
       // Album artwork pop
       tl.fromTo(
-        albumArtRef.current,
+        ".player-album-art",
         {
           scale: 0.7,
           rotation: -12,
@@ -185,10 +185,10 @@ export const PlaybackControls = () => {
         "-=0.4"
       );
 
-    }, songInfoRef);
+    }, footerRef);
 
     return () => ctx.revert();
-  }, [currentSong?._id]);
+  }, [currentSongId]);
 
   // Seek control
   const handleSeek = (value: number | readonly number[]): void => {
@@ -215,22 +215,20 @@ export const PlaybackControls = () => {
   return (
     <footer
       ref={footerRef}
-      className="h-24 shrink-0 rounded-xl border-t border-white/10 bg-black/95 px-3 shadow-[0_-8px_30px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:h-20 sm:px-4"
+      className="min-h-[108px] shrink-0 rounded-2xl border border-white/10 bg-black px-2 py-2 shadow-[0_-8px_30px_rgba(0,0,0,0.45)] backdrop-blur-xl md:h-20 md:min-h-0 md:rounded-xl md:border-t md:border-x-0 md:border-b-0 md:px-4 md:py-0"
     >
-      <div className="mx-auto flex h-full max-w-[1800px] flex-col justify-center gap-0 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
+      <div className="mx-auto hidden h-full max-w-[1800px] flex-col justify-center gap-0 md:flex md:flex-row md:items-center md:justify-between md:gap-0">
 
         {/* Currently Playing Song */}
         <div
-          ref={songInfoRef}
-          className="flex min-w-0 w-full items-center gap-2 sm:min-w-45 sm:w-[30%] sm:gap-4"
+          className="flex min-w-0 w-full items-center gap-2 md:min-w-45 md:w-[30%] md:gap-4"
         >
           {currentSong && (
             <>
               <img
-                ref={albumArtRef}
                 src={currentSong.imageUrl}
                 alt={currentSong.title}
-                className="size-8 shrink-0 rounded-md object-cover shadow-lg sm:size-12"
+                className="player-album-art size-8 shrink-0 rounded-md object-cover shadow-lg md:size-12"
               />
 
               <div className="flex-1 min-w-0">
@@ -247,7 +245,7 @@ export const PlaybackControls = () => {
         </div>
 
         {/* Player Controls */}
-        <div className="flex w-full max-w-full flex-col items-center gap-1 sm:max-w-[45%] sm:gap-2">
+        <div className="flex w-full max-w-full flex-col items-center gap-1 md:max-w-[45%] md:gap-2">
 
           <div className="flex items-center gap-4 sm:gap-6">
 
@@ -256,7 +254,7 @@ export const PlaybackControls = () => {
               data-player-control
               size="icon"
               variant="ghost"
-              className="hidden sm:inline-flex hover:text-white text-zinc-400 transition-transform duration-200 hover:scale-110 active:scale-90"
+              className="hidden md:inline-flex hover:text-white text-zinc-400 transition-transform duration-200 hover:scale-110 active:scale-90"
               aria-label="Shuffle"
             >
               <Shuffle className="h-4 w-4" />
@@ -309,7 +307,7 @@ export const PlaybackControls = () => {
               data-player-control
               size="icon"
               variant="ghost"
-              className="hidden sm:inline-flex hover:text-white text-zinc-400 transition-transform duration-200 hover:scale-110 active:scale-90"
+              className="hidden md:inline-flex hover:text-white text-zinc-400 transition-transform duration-200 hover:scale-110 active:scale-90"
               aria-label="Repeat"
             >
               <Repeat className="h-4 w-4" />
@@ -318,7 +316,7 @@ export const PlaybackControls = () => {
           </div>
 
           {/* Progress Bar */}
-          <div className="flex w-full min-w-0 items-center gap-2 pb-1 sm:pb-0">
+          <div className="flex w-full min-w-0 items-center gap-2 pb-1 md:pb-0">
 
             <div className="shrink-0 whitespace-nowrap tabular-nums text-xs text-zinc-400">
               {formatTime(currentTime)}
@@ -340,7 +338,7 @@ export const PlaybackControls = () => {
         </div>
 
         {/* Volume Controls */}
-        <div className="hidden sm:flex items-center gap-4 min-w-45 w-[30%] justify-end">
+        <div className="hidden min-w-45 w-[30%] items-center justify-end gap-4 md:flex">
 
           <Button
             data-player-control
@@ -398,6 +396,76 @@ export const PlaybackControls = () => {
           </div>
         </div>
 
+      </div>
+
+      {/* Compact mobile player */}
+      <div className="relative flex h-full min-h-[92px] items-center gap-2 overflow-hidden rounded-xl border border-white/10 bg-zinc-950 px-2.5 pb-4 pt-2.5 shadow-[0_8px_30px_rgba(0,0,0,0.4)] md:hidden">
+        {currentSong ? (
+          <img
+            src={currentSong.imageUrl}
+            alt={currentSong.title}
+            className="player-album-art size-[68px] shrink-0 rounded-lg object-cover shadow-lg"
+          />
+        ) : (
+          <div className="size-[68px] shrink-0 rounded-lg bg-zinc-900" />
+        )}
+
+        <div className="min-w-0 flex-1 px-1 text-center">
+          <div className="song-details truncate text-[15px] font-semibold text-zinc-100">
+            {currentSong?.title ?? "Nothing playing"}
+          </div>
+          <div className="song-details flex min-w-0 items-center justify-center gap-1.5 truncate text-xs text-emerald-400">
+            <Bluetooth className="size-4 shrink-0" />
+            <span className="truncate">{currentSong?.artist ?? "Choose a song to start listening"}</span>
+          </div>
+        </div>
+
+        <div className="flex shrink-0 items-center gap-0.5 text-emerald-400">
+          <Button
+            data-player-control
+            size="icon"
+            variant="ghost"
+            onClick={playPrevious}
+            disabled={!currentSong}
+            className="size-9 rounded-full text-emerald-400 hover:bg-emerald-400/10 hover:text-emerald-300"
+            aria-label="Previous song"
+          >
+            <SkipBack className="size-5" />
+          </Button>
+
+          <Button
+            data-player-control
+            size="icon"
+            variant="ghost"
+            onClick={playNext}
+            disabled={!currentSong}
+            className="size-9 rounded-full bg-emerald-500 text-black hover:bg-emerald-400"
+            aria-label="Next song"
+          >
+            <SkipForward className="size-5" />
+          </Button>
+
+          <Button
+            data-player-control
+            size="icon"
+            className="size-10 rounded-full bg-white text-black hover:bg-zinc-200"
+            onClick={togglePlay}
+            disabled={!currentSong}
+            aria-label={isPlaying ? "Pause" : "Play"}
+          >
+            {isPlaying ? <Pause className="size-5" /> : <Play className="size-5 fill-current" />}
+          </Button>
+        </div>
+
+        <Slider
+          value={[currentTime]}
+          max={duration || 100}
+          step={1}
+          disabled={!currentSong}
+          aria-label="Playback progress"
+          className="absolute inset-x-2.5 bottom-1.5 h-2 [&_[data-slot=slider-range]]:bg-emerald-400 [&_[data-slot=slider-thumb]]:size-2"
+          onValueChange={handleSeek}
+        />
       </div>
     </footer>
   );
